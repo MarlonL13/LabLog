@@ -43,14 +43,3 @@ ProjectParticipants.init(
 );
 
 export default ProjectParticipants;
-
-const syncDatabase = async () => {
-  try {
-    await sequelize.sync({ force: false });
-    console.log("Database synchronized");
-  } catch (error) {
-    console.error("Error synchronizing the database:", error);
-  }
-};
-
-syncDatabase();

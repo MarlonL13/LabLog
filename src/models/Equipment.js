@@ -3,50 +3,25 @@ import { Model, DataTypes } from "sequelize";
 
 class Equipment extends Model {}
 
-User.init(
+Equipment.init(
   {
-    user_id: {
+    id: {
       type: DataTypes.UUID,
-      primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-    },
-    phone: {
-      type: DataTypes.STRING(20),
-    },
-    user_role: {
-      type: DataTypes.ENUM(
-        "student",
-        "researcher",
-        "technician",
-        "coordinator"
-      ),
-      allowNull: false,
-    },
-    registration_number: {
-      type: DataTypes.STRING(100),
-      unique: true,
-    },
-    user_status: {
-      type: DataTypes.ENUM("active", "inactive"),
+    status: {
+      type: DataTypes.ENUM("available", "maintenance", "broken"),
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "user",
+    modelName: "equipment",
   }
 );
 

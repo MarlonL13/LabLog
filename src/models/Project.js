@@ -7,8 +7,8 @@ Project.init(
   {
     id: {
       type: DataTypes.UUID,
-      primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -16,6 +16,7 @@ Project.init(
     },
     coordinator_id: {
       type: DataTypes.UUID,
+      allowNull: false,
       references: {
         model: "user",
         key: "id",
@@ -39,14 +40,3 @@ Project.init(
 );
 
 export default Project;
-
-const syncDatabase = async () => {
-  try {
-    await sequelize.sync({ force: false });
-    console.log("Database synchronized");
-  } catch (error) {
-    console.error("Error synchronizing the database:", error);
-  }
-};
-
-syncDatabase();

@@ -7,19 +7,19 @@ User.init(
   {
     id: {
       type: DataTypes.UUID,
-      primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
@@ -53,16 +53,5 @@ User.init(
     modelName: "user",
   }
 );
-
 export default User;
 
-const syncDatabase = async () => {
-  try {
-    await sequelize.sync({ force: false });
-    console.log("Database synchronized");
-  } catch (error) {
-    console.error("Error synchronizing the database:", error);
-  }
-};
-
-syncDatabase();

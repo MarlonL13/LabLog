@@ -5,25 +5,24 @@ class Location extends Model {}
 
 Location.init(
   {
-    locationId: {
+    id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    labId: {
-      type: DataTypes.ENUM("lab1", "lab2" /* ... other lab options */),
+    laboratory: {
+      type: DataTypes.ENUM("lab1", "lab2"),
       allowNull: false,
     },
-    locationDescription: {
-      type: DataTypes.STRING(100),
+    description: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "Location",
-    tableName: "locations",
+    modelName: "location",
   }
 );
 
-module.exports = Location;
+export default Location;
