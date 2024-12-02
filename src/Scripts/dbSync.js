@@ -4,7 +4,7 @@ import { sequelize } from "../models/index.js";
 
 (async () => {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log("DB created sucessfully");
   } catch (error) {
     console.error("DB creation failed", error);

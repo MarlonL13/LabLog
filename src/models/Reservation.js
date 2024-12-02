@@ -48,7 +48,7 @@ Reservation.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    start_ate: {
+    start_date: {
       type: DataTypes.DATE,
     },
     end_date: {

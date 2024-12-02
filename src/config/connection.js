@@ -1,6 +1,15 @@
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
-dotenv.config({ path: "../../.env" }); 
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+
+// Resolve the directory of the current file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Dynamically resolve the path to your .env file
+const envPath = resolve(__dirname, "../../.env");
+dotenv.config({ path: envPath });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,

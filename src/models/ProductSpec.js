@@ -26,7 +26,7 @@ ProductSpec.init(
       allowNull: false,
     },
     unit: {
-      type: DataTypes.ENUM("mg", "g", "kg", "ml", "L", "items"),
+      type: DataTypes.ENUM("mg", "g", "kg", "mL", "L", "items"),
       allowNull: false,
     },
     alert_threshold: {

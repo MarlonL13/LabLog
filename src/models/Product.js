@@ -38,10 +38,6 @@ Product.init(
       type: DataTypes.ENUM("opened", "unopened", "finished"),
       allowNull: false,
     },
-    laboratory: {
-      type: DataTypes.ENUM("lab1", "lab2"),
-      allowNull: false,
-    },
     location_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -53,7 +49,7 @@ Product.init(
       onUpdate: "CASCADE",
     },
     expiration_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     current_amount: {
@@ -61,7 +57,7 @@ Product.init(
       allowNull: false,
     },
     date_received: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       defaultValue: DataTypes.NOW,
     },
   },

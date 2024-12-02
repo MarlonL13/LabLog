@@ -1,10 +1,10 @@
 import sequelize from "../config/connection.js";
 import User from "./User.js";
 import Project from "./Project.js";
-import ProjectParticipant from "./Project_paticipant.js";
+import ProjectParticipant from "./ProjectParticipant.js";
 import Location from "./Location.js";
 import Product from "./Product.js";
-import ProductSpec from "./Product_spec.js";
+import ProductSpec from "./ProductSpec.js";
 import Equipment from "./Equipment.js";
 import Reservation from "./Reservation.js";
 
