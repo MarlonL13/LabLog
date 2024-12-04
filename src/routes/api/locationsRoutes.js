@@ -6,18 +6,23 @@ DELETE /locations/:id
 */
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/productController.js";
+import {
+  createLocation,
+  searchLocation,
+  deleteLocation,
+} from "../../controllers/locationController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
-router.route("/locations")
-.post(); // Researcher and above only route
+router.route("/")
+.post(createLocation); // Researcher and above only route
 
-router.route("/locations/search")	
-.get(); // Researcher and above only route
+router.route("/:laboratory")
+.get(searchLocation); // Researcher and above only route
 
-router.route("/locations/:id")
-.delete(); // Researcher and above only route
+router.route("/:id")
+.delete(deleteLocation); // Researcher and above only route
 
+export default router;

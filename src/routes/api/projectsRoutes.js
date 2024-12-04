@@ -25,3 +25,5 @@ router.route("/projects/:id")
 
 router.route("/projects/search")
 .get();
+
+export default router;

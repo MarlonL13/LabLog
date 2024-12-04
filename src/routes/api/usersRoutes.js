@@ -9,19 +9,26 @@ PATCH /users/:id
 
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/usersController.js";
+import {
+  getUserById,
+  createUser,
+  updateUser,
+  searchUsers,
+} from "../../controllers/userController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
-router.route("/users/:id")
-.get()
-.patch(); // coordinator only route
+router.route("/search")
+.get(searchUsers); // Search for users - optional accepts "role" query parameters
 
-router.route("/users/search")
-.get() // Search for users - optional accepts "role" query parameters
+router.route("/:id")
+.get(getUserById)
+.patch(updateUser); // coordinator only route
 
 // Coordinator only route
-router.route("/users")
-.post();
+router.route("/")
+.post(createUser);
+
+export default router;

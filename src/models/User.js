@@ -45,13 +45,16 @@ User.init(
     },
     status: {
       type: DataTypes.ENUM("active", "inactive"),
+      defaultValue: "active",
       allowNull: false,
     },
   },
   {
     sequelize,
     modelName: "user",
+    defaultScope: {
+      attributes: { exclude: ["password","registration_number"] }, // Exclude password by default
+    },
   }
 );
 export default User;
-

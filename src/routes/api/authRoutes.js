@@ -20,3 +20,5 @@ router.route("/logout")
 
 router.route("/forgot-password")
 .post();
+
+export default router;

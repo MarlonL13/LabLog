@@ -36,4 +36,4 @@ router.route("/spec/:id/products/:id")
 .patch()
 .delete();
 
-
+export default router;

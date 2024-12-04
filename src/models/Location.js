@@ -14,7 +14,7 @@ Location.init(
       type: DataTypes.ENUM("lab1", "lab2"),
       allowNull: false,
     },
-    description: {
+    sub_location: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

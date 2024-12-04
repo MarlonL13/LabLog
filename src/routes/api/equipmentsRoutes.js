@@ -23,3 +23,4 @@ router.route("/equipments/search")
 router.route("/equipments/:id")
 .patch(); // technician and above only route
 
+export default router;

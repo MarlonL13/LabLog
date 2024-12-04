@@ -28,3 +28,5 @@ router.route("/reservation/:id")
 // Technician only routes
 router.route("/reservation/search")
 .get();
+
+export default router;
