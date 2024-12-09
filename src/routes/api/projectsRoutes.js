@@ -9,21 +9,26 @@ POST /projects
 
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/projectController.js";
+import {
+  createProject,
+  getActiveProjects,
+  getProjectById,
+  searchProject,
+  updateProject,
+} from "../../controllers/projectController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
+router.route("/search")
+.get(searchProject);
 
-router.route("/projects")
-.get()
-.post(); // Coordinator only route
+router.route("/:id")
+.get(getProjectById)
+.patch(updateProject); // Coordinator only route
 
-router.route("/projects/:id")
-.get()
-.patch(); // Coordinator only route
-
-router.route("/projects/search")
-.get();
+router.route("/").
+get(getActiveProjects)
+.post(createProject); // Coordinator only route
 
 export default router;

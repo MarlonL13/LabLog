@@ -14,16 +14,6 @@ Project.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    coordinator_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: "user",
-        key: "id",
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "CASCADE",
-    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,

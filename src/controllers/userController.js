@@ -40,13 +40,18 @@ export const updateUser = async (req, res) => {
 
 export const searchUsers = async (req, res) => {
   try {
-    const { name } = req.query;
+    const { name, role } = req.query;
+    const whereConditions = {};
+    if (name) {
+      whereConditions.name = {
+        [Op.iLike]: `%${name}%`,
+      };
+    }
+    if (role) {
+      whereConditions.role = role;
+    }
     const users = await User.findAll({
-      where: {
-        name: {
-          [Op.like]: `%${name}%`,
-        },
-      },
+      where: whereConditions,
     });
     if (users.length > 0) {
       res.status(200).json(users);

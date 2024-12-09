@@ -9,16 +9,16 @@ import Equipment from "./Equipment.js";
 import Reservation from "./Reservation.js";
 
 // User and project
-Project.belongsTo(User, {
-  foreignKey: "coordinator_id",
-  onDelete: "RESTRICT",
-  onUpdate: "CASCADE",
+Project.belongsToMany(User, {
+  through: ProjectParticipant, // Use the join table
+  foreignKey: "project_id",
+  otherKey: "user_id",
 });
 
-User.hasMany(Project, {
-  foreignKey: "coordinator_id",
-  onDelete: "RESTRICT",
-  onUpdate: "CASCADE",
+User.belongsToMany(Project, {
+  through: ProjectParticipant, // Use the join table
+  foreignKey: "user_id",
+  otherKey: "project_id",
 });
 
 // Project and project participant
