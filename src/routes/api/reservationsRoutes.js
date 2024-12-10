@@ -9,24 +9,29 @@ DELETE /reservations/:id
 
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/reservationController.js";
+import {
+  createResevation,
+  deleteReservation,
+  getAllReservations,
+  getReservationById,
+  searchReservations,
+} from "../../controllers/reservationController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
-router.route("/reservation")
-.get() // Technician only route
-.post();
-
+// Technician only routes
+router.route("/search")
+.get(searchReservations);
 
 // Technician only routes
-router.route("/reservation/:id")
-.get()
-.delete();
+router.route("/:id")
+.get(getReservationById)
+.delete(deleteReservation);
 
-// Technician only routes
-router.route("/reservation/search")
-.get();
+router.route("/")
+.get(getAllReservations) // Technician only route
+.post(createResevation);
 
 export default router;

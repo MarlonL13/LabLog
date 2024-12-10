@@ -8,19 +8,21 @@ PATCH /equipments/:id
 
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/equipmentController.js";
+import {
+  createEquipment,
+  getAllEquipment,
+  updateEquipment,
+} from "../../controllers/equipmentController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
-router.route("/equipments")
-.post(); // technician and above only route
+router.route("/:id")
+.patch(updateEquipment); // technician and above only route
 
-router.route("/equipments/search")
-.get();
-
-router.route("/equipments/:id")
-.patch(); // technician and above only route
+router.route("/")
+.get(getAllEquipment) // technician and above only route
+.post(createEquipment); // technician and above only route
 
 export default router;

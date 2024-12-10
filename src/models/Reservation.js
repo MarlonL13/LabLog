@@ -50,6 +50,7 @@ Reservation.init(
     },
     start_date: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     end_date: {
       type: DataTypes.DATE,
