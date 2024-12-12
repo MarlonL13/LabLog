@@ -12,17 +12,17 @@ DELETE /spec/:id/product/:id
 
 import express from "express";
 const router = express.Router();
-import { getSpectById, searchSpec } from "../../controllers/specController.js";
+import { createSpec, getSpectById, searchSpec, updateSpec } from "../../controllers/specController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 router.route("/:id")
 .get(getSpectById)
-.patch(); // Researcher and above only route
+.patch(updateSpec); // Researcher and above only route
 
 router.route("/")
-.post(); // Researcher and above only route
+.post(createSpec); // Researcher and above only route
 
 router.route("/search")
 .get(searchSpec);

@@ -26,7 +26,7 @@ Product.init(
     },
     project_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "project",
         key: "id",
