@@ -1,10 +1,17 @@
-import { User } from "../models/index.js";
-import { Op } from "sequelize";
+import { userServices } from "../services/userServices.js";
+
+export const createUser = async (req, res) => {
+  try {
+    const newUser = await userServices.createUser(req.body);
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(500).json({ message: `${err.name}: ${err.message}` });
+  }
+};
 
 export const getUserById = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const userData = await User.findByPk(userId);
+    const userData = await userServices.getUserById(req.params.id);
     if (userData) {
       res.status(200).json(userData);
     } else {
@@ -15,19 +22,9 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
-  } catch (err) {
-    res.status(500).json({ message: `${err.name}: ${err.message}` });
-  }
-};
-
 export const updateUser = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const [update] = await User.update(req.body, { where: { id: userId } });
+    const update = await userServices.updateUser(req.params.id, req.body);
     if (update) {
       res.status(200).json({ message: "User updated" });
     } else {
@@ -40,19 +37,7 @@ export const updateUser = async (req, res) => {
 
 export const searchUsers = async (req, res) => {
   try {
-    const { name, role } = req.query;
-    const whereConditions = {};
-    if (name) {
-      whereConditions.name = {
-        [Op.iLike]: `%${name}%`,
-      };
-    }
-    if (role) {
-      whereConditions.role = role;
-    }
-    const users = await User.findAll({
-      where: whereConditions,
-    });
+    const users = await userServices.searchUsers(req.query)
     if (users.length > 0) {
       res.status(200).json(users);
     } else {

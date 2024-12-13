@@ -17,14 +17,15 @@ import { createSpec, getSpectById, searchSpec, updateSpec } from "../../controll
 // ---------------------
 // Authenticated Routes
 // ---------------------
+
+router.route("/search")
+.get(searchSpec);
+
 router.route("/:id")
 .get(getSpectById)
 .patch(updateSpec); // Researcher and above only route
 
 router.route("/")
 .post(createSpec); // Researcher and above only route
-
-router.route("/search")
-.get(searchSpec);
 
 export default router;

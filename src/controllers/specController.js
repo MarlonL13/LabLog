@@ -1,11 +1,17 @@
-import { ProductSpec, Product, Location } from "../models/index.js";
-import Sequelize from "sequelize";
-import { Op } from "sequelize";
+import { specServices } from "../services/specServices.js";
+
+export const createSpec = async (req, res) => {
+  try {
+    const newSpec = await specServices.createSpec(req.body);
+    res.status(201).json(newSpec);
+  } catch (err) {
+    res.status(500).json({ message: `${err.name}: ${err.message}` });
+  }
+};
 
 export const updateSpec = async (req, res) => {
   try {
-    const specId = req.params.id;
-    const [update] = await ProductSpec.update(req.body, { where: { id: specId } });
+    const update = await specServices.updateSpec(req.params.id, req.body);
     if (update) {
       res.status(200).json({ message: "Product spec updated" });
     } else {
@@ -16,48 +22,9 @@ export const updateSpec = async (req, res) => {
   }
 };
 
-export const createSpec = async (req, res) => {
-  try {
-    const newSpec = await ProductSpec.create(req.body);
-    res.status(201).json(newSpec);
-  } catch (err) {
-    res.status(500).json({ message: `${err.name}: ${err.message}` });
-  }
-};
-
 export const getSpectById = async (req, res) => {
   try {
-    const specId = req.params.id;
-    const spectData = await ProductSpec.findByPk(specId, {
-      include: [
-        {
-          model: Product,
-          as: "products",
-          required: false,
-          where: {condition: ["opened", "unopened"]},
-          attributes: [
-            "id",
-            "status",
-            "condition",
-            [
-              Sequelize.fn(
-                "ROUND",
-                Sequelize.literal(
-                  "current_amount / CAST(product_spec.size AS numeric)"
-                ),
-                2 // Round the result to 2 decimal places
-              ),
-              "percent_remaining", // Alias for the calculated field
-            ],
-          ],
-          include: {
-            model: Location,
-            as: "location",
-            attributes: ["laboratory", "sub_location"],
-          },
-        },
-      ],
-    });
+    const spectData = await specServices.getSpectById(req.params.id);
     if (spectData) {
       res.status(200).json(spectData);
     } else {
@@ -70,39 +37,7 @@ export const getSpectById = async (req, res) => {
 
 export const searchSpec = async (req, res) => {
   try {
-    const { name } = req.query;
-    const specs = await ProductSpec.findAll({
-      where: {
-        [Op.or]: [
-          { name: { [Op.iLike]: `%${name}%` } },
-          { abbreviation: { [Op.iLike]: `%${name}%` } },
-        ],
-      },
-      attributes: {
-        exclude: ["size", "unit", "alert_threshold"],
-      },
-      include: [
-        {
-          model: Product,
-          as: "products",
-          required: false,
-          attributes: [
-            [
-              Sequelize.literal(
-                "(SELECT COUNT(*) FROM product WHERE product.spec_id = product_spec.id AND product.condition = 'unopened')"
-              ),
-              "total_unopened",
-            ],
-            [
-              Sequelize.literal(
-                "(SELECT COUNT(*) FROM product WHERE product.spec_id = product_spec.id AND product.condition = 'opened')"
-              ),
-              "total_opened",
-            ],
-          ],
-        },
-      ],
-    });
+    const specs = await specServices.searchSpec(req.query.name);
     if (specs.length > 0) {
       res.status(200).json(specs);
     } else {
