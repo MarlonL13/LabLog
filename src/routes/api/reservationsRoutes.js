@@ -10,7 +10,7 @@ DELETE /reservations/:id
 import express from "express";
 const router = express.Router();
 import {
-  createResevation,
+  createReservation,
   deleteReservation,
   getAllReservations,
   getReservationById,
@@ -32,6 +32,6 @@ router.route("/:id")
 
 router.route("/")
 .get(getAllReservations) // Technician only route
-.post(createResevation);
+.post(createReservation);
 
 export default router;
