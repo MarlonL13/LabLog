@@ -1,8 +1,12 @@
 import { Op } from "sequelize";
 import { createRecord, updateRecord } from "./commonServices.js";
 import { User } from "../models/index.js";
+import { passwordUtils } from "../utils/passwordUtils.js";
+import bcrypt from "bcrypt";
 
 const createUser = async (body) => {
+  const defaultPassword = passwordUtils.genereatePassword(body);
+  body.password = await bcrypt.hash(defaultPassword, 10);
   return await createRecord(User, body);
 };
 
@@ -16,6 +20,9 @@ const getUserById = async (userId) => {
 };
 
 const updateUser = async (userId, body) => {
+  if (body.password) {
+    throw new Error("Password updates are not allowed through this route.");
+  }
   return await updateRecord(User, userId, body);
 };
 
@@ -32,7 +39,7 @@ export const searchUsers = async (query) => {
   }
   const users = await User.findAll({
     where: whereConditions,
-    attributes: ["id", "name"]
+    attributes: ["id", "name"],
   });
   return users;
 };

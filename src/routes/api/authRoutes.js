@@ -6,14 +6,17 @@ POST /forgot-password
 
 import express from "express";
 const router = express.Router();
-import {} from "../../controllers/authController.js";
+import { login } from "../../controllers/authController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
 router.route("/login")
-.post();
+.post(login);
+
+router.route("/verify")
+.get()
 
 router.route("/logout")
 .post();

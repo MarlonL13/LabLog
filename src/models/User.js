@@ -29,6 +29,7 @@ User.init(
     phone: {
       type: DataTypes.STRING(20),
       unique: true,
+      allowNull: false,
     },
     role: {
       type: DataTypes.ENUM(
@@ -42,6 +43,7 @@ User.init(
     registration_number: {
       type: DataTypes.STRING(20),
       unique: true,
+      allowNull: false,
     },
     status: {
       type: DataTypes.ENUM("active", "inactive"),
@@ -52,9 +54,6 @@ User.init(
   {
     sequelize,
     modelName: "user",
-    defaultScope: {
-      attributes: { exclude: ["password","registration_number"] }, // Exclude password by default
-    },
   }
 );
 export default User;
