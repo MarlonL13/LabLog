@@ -6,7 +6,7 @@ POST /forgot-password
 
 import express from "express";
 const router = express.Router();
-import { login } from "../../controllers/authController.js";
+import { login, logout, refreshAccessToken } from "../../controllers/authController.js";
 
 // ---------------------
 // Authenticated Routes
@@ -15,11 +15,11 @@ import { login } from "../../controllers/authController.js";
 router.route("/login")
 .post(login);
 
-router.route("/verify")
-.get()
+router.route("/refresh")
+.post(refreshAccessToken);
 
 router.route("/logout")
-.post();
+.post(logout);
 
 router.route("/forgot-password")
 .post();

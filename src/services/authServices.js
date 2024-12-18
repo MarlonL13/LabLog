@@ -1,4 +1,5 @@
 import { User } from "../models/index.js";
+import { generateTokens } from "../utils/tokenUtils.js";
 import jwt from "jsonwebtoken";
 import bcryp from "bcrypt";
 
@@ -11,20 +12,32 @@ const authenticateUser = async (registration_number, password) => {
 
     const isPasswordValid = await bcryp.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
+      throw new Error("Invalid password");
     }
+    const { accessToken, refreshToken } = generateTokens(user);
 
-    const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
-    );
-    return token;
+    return { accessToken, refreshToken };
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
+const refreshAccessToken = async (refreshToken) => {
+  try {
+    const user = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
+
+    return { accessToken, newRefreshToken };
+  } catch {
+    throw new Error("Invalid refresh token");
+  }
+};
+
+
 export const authServices = {
   authenticateUser,
+  refreshAccessToken,
 };
