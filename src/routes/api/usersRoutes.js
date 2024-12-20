@@ -9,6 +9,7 @@ PATCH /users/:id
 
 import express from "express";
 const router = express.Router();
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
 import {
   getUserById,
   createUser,
@@ -21,7 +22,7 @@ import {
 // ---------------------
 
 router.route("/search")
-.get(searchUsers); // Search for users - optional accepts "role" query parameters
+.get(verifyToken, checkRole("coordinator"), searchUsers); // Search for users - optional accepts "role" query parameters
 
 router.route("/:id")
 .get(getUserById)
