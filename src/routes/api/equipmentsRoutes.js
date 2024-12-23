@@ -8,6 +8,7 @@ PATCH /equipments/:id
 
 import express from "express";
 const router = express.Router();
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
 import {
   createEquipment,
   getAllEquipment,
@@ -19,10 +20,10 @@ import {
 // ---------------------
 
 router.route("/:id")
-.patch(updateEquipment); // technician and above only route
+.patch(verifyToken, checkRole("technician"), updateEquipment); // technician and above only route
 
 router.route("/")
-.get(getAllEquipment) // technician and above only route
-.post(createEquipment); // technician and above only route
+.get(verifyToken, getAllEquipment) // technician and above only route
+.post(verifyToken, checkRole("technician"), createEquipment); // technician and above only route
 
 export default router;

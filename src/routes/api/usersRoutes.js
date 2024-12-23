@@ -22,14 +22,14 @@ import {
 // ---------------------
 
 router.route("/search")
-.get(verifyToken, checkRole("coordinator"), searchUsers); // Search for users - optional accepts "role" query parameters
+.get(verifyToken, searchUsers); // Search for users - optional accepts "role" query parameters
 
-router.route("/:id")
-.get(getUserById)
-.patch(updateUser); // coordinator only route
+router
+  .route("/:id")
+  .get(verifyToken, checkRole("coordinator"), getUserById)
+  .patch(verifyToken, checkRole("coordinator"), updateUser); // coordinator only route
 
 // Coordinator only route
-router.route("/")
-.post(createUser);
+router.route("/").post(verifyToken, checkRole("coordinator"), createUser);
 
 export default router;

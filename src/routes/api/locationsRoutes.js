@@ -6,6 +6,7 @@ DELETE /locations/:id
 */
 import express from "express";
 const router = express.Router();
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
 import {
   createLocation,
   searchLocation,
@@ -17,12 +18,12 @@ import {
 // ---------------------
 
 router.route("/")
-.post(createLocation); // Researcher and above only route
+.post(verifyToken, checkRole("researcher"), createLocation); // Researcher and above only route
 
 router.route("/:laboratory")
-.get(searchLocation); // Researcher and above only route
+.get(verifyToken, searchLocation);
 
 router.route("/:id")
-.delete(deleteLocation); // Researcher and above only route
+.delete(verifyToken, checkRole("researcher"), deleteLocation); // Researcher and above only route
 
 export default router;

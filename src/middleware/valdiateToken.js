@@ -20,7 +20,6 @@ const checkRole = (role) => (req, res, next) => {
     researcher: 2,
     technician: 3,
     coordinator: 4,
-    test: 5,
   };
   const userRole = roleNumber[req.user.role];
   const minRole = roleNumber[role];

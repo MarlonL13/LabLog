@@ -9,6 +9,7 @@ POST /projects
 
 import express from "express";
 const router = express.Router();
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
 import {
   createProject,
   getActiveProjects,
@@ -21,14 +22,16 @@ import {
 // Authenticated Routes
 // ---------------------
 router.route("/search")
-.get(searchProject);
+.get(verifyToken, searchProject);
 
-router.route("/:id")
-.get(getProjectById)
-.patch(updateProject); // Coordinator only route
+router
+  .route("/:id")
+  .get(verifyToken, getProjectById)
+  .patch(verifyToken, checkRole("coordinator"), updateProject); // Coordinator only route
 
-router.route("/").
-get(getActiveProjects)
-.post(createProject); // Coordinator only route
+router
+  .route("/")
+  .get(verifyToken, getActiveProjects)
+  .post(verifyToken, checkRole("coordinator"), createProject); // Coordinator only route
 
 export default router;

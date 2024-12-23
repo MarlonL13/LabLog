@@ -9,6 +9,7 @@ DELETE /reservations/:id
 
 import express from "express";
 const router = express.Router();
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
 import {
   createReservation,
   deleteReservation,
@@ -23,15 +24,15 @@ import {
 
 // Technician only routes
 router.route("/search")
-.get(searchReservations);
+.get(verifyToken, checkRole("technician"), searchReservations);
 
 // Technician only routes
 router.route("/:id")
-.get(getReservationById)
-.delete(deleteReservation);
+.get(verifyToken, checkRole("technician"), getReservationById)
+.delete(verifyToken, checkRole("technician"), deleteReservation);
 
 router.route("/")
-.get(getAllReservations) // Technician only route
-.post(createReservation);
+.get(verifyToken,checkRole("technician") , getAllReservations) // Technician only route
+.post(verifyToken, createReservation);
 
 export default router;

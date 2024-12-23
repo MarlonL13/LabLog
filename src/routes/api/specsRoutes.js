@@ -12,20 +12,26 @@ DELETE /spec/:id/product/:id
 
 import express from "express";
 const router = express.Router();
-import { createSpec, getSpectById, searchSpec, updateSpec } from "../../controllers/specController.js";
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
+import {
+  createSpec,
+  getSpectById,
+  searchSpec,
+  updateSpec,
+} from "../../controllers/specController.js";
 
 // ---------------------
 // Authenticated Routes
 // ---------------------
 
 router.route("/search")
-.get(searchSpec);
+.get(verifyToken, searchSpec);
 
 router.route("/:id")
-.get(getSpectById)
-.patch(updateSpec); // Researcher and above only route
+.get(verifyToken, getSpectById)
+.patch(verifyToken, checkRole("researcher"), updateSpec); // Researcher and above only route
 
 router.route("/")
-.post(createSpec); // Researcher and above only route
+.post(verifyToken, checkRole("researcher"), createSpec); // Researcher and above only route
 
 export default router;

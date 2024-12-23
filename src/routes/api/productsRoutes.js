@@ -1,13 +1,19 @@
 import express from "express";
 const router = express.Router();
-import { createProduct, deleteProduct, getProductById, updateProduct } from "../../controllers/productController.js";
+import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  updateProduct,
+} from "../../controllers/productController.js";
 
 router.route("/:id")
-.get(getProductById)
-.patch(updateProduct)
-.delete(deleteProduct); // Researcher and above only route
+  .get(verifyToken, getProductById)
+  .patch(verifyToken, updateProduct)
+  .delete(verifyToken, checkRole("researcher"),deleteProduct); // Researcher and above only route
 
 router.route("/")
-.post(createProduct); // Researcher and above only route
+.post(verifyToken, checkRole("technician"),createProduct); // Researcher and above only route
 
 export default router;

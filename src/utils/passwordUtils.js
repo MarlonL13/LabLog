@@ -5,7 +5,9 @@ const genereatePassword = (body) => {
       "Missing required fields to generate the default password."
     );
   }
-  const password = `${name.split(" ")[0]}.${name.split(" ")[1]}.${phone.slice(-3)}`;
+  const lowerCaseName = name.toLowerCase();
+
+  const password = `${lowerCaseName.split(" ")[0]}.${lowerCaseName.split(" ")[1]}.${phone.slice(-3)}`;
   return password;
 };
 
