@@ -1,6 +1,7 @@
 import { projectServices } from "../services/projectServices.js";
 import sequelize from "../config/connection.js";
 
+// Creates a new project using transaction, commits if successful, rolls back if there's an error
 export const createProject = async (req, res) => {
   const t = await sequelize.transaction();
   try {
@@ -28,7 +29,6 @@ export const searchProject = async (req, res) => {
 
 export const updateProject = async (req, res) => {
   try {
-    // First, update the project itself
     const update = await projectServices.updateProject(req.params.id, req.body)
     if (update){
       res.status(200).json({ message: "Project updated successfully" });

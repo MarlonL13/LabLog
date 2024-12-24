@@ -34,7 +34,7 @@ const sequelize = new Sequelize(
     console.log("Connected to the database");
     // Create the extension for UUID generation
     // await sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
-    //console.log("UUID extension enabled.");
+    // console.log("UUID extension enabled.");
   } catch (error) {
     console.error(
       "Error connecting to the database or enabling UUID extension:",

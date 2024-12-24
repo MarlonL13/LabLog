@@ -1,23 +1,16 @@
-/*
-POST /login
-POST /logout
-POST /forgot-password
-*/
-
 import express from "express";
 const router = express.Router();
 import { login, logout, refreshAccessToken } from "../../controllers/authController.js";
 
-// ---------------------
-// Authenticated Routes
-// ---------------------
-
+// Login endpoint
 router.route("/login")
 .post(login);
 
+// Refresh token endpoint
 router.route("/refresh")
 .post(refreshAccessToken);
 
+// Logout endpoint
 router.route("/logout")
 .post(logout);
 

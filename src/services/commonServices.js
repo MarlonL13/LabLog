@@ -2,8 +2,8 @@ import { removeWhiteSpace } from "../utils/scriptUtils";
 
 export const createRecord = async (Model, body) => {
   body = removeWhiteSpace(body);
-  const newUser = await Model.create(body);
-  return newUser;
+  const newRecord = await Model.create(body);
+  return newRecord;
 };
 
 export const updateRecord = async (Model, id, body) => {
@@ -13,6 +13,6 @@ export const updateRecord = async (Model, id, body) => {
 };
 
 export const deleteRecord = async (Model, id) => {
-  const location = await Model.findByPk(id);
-  await location.destroy();
+  const record= await Model.findByPk(id);
+  await record.destroy();
 };

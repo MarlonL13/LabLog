@@ -1,5 +1,13 @@
 import jwt from "jsonwebtoken";
 
+/**
+ * Middleware to verify JWT token in request headers
+
+ * @param {string} req.headers.authorization - Authorization header containing the JWT token
+ * @param {Function} next - Express next middleware function
+ * @returns {Object} Returns 401 if token is missing, 403 if token is invalid, or calls next() if valid
+ * @throws {Error} When token verification fails
+ */
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   if (!token) {
@@ -14,6 +22,12 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+/**
+ * Creates a middleware function that checks if a user has sufficient role permissions
+ * @param {string} role - The minimum role required to access the route ('student', 'researcher', 'technician', or 'coordinator')
+ * @returns {function} Middleware function that validates user role
+ * @throws {Response} Returns 403 status if user's role is insufficient
+ */
 const checkRole = (role) => (req, res, next) => {
   const roleNumber = {
     student: 1,

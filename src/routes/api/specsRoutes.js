@@ -1,15 +1,3 @@
-/*
-Products:
-GET /spec/search?q=:query
-GET /spec/:id
-GET /spec/:id/products/:id
-PATCH /spec/:id
-PATCH /spec/:id/products/:id
-POST /spec
-POST /spec/:id/products
-DELETE /spec/:id/product/:id
-  */
-
 import express from "express";
 const router = express.Router();
 import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
@@ -20,18 +8,17 @@ import {
   updateSpec,
 } from "../../controllers/specController.js";
 
-// ---------------------
-// Authenticated Routes
-// ---------------------
-
+// Search endpoint
 router.route("/search")
 .get(verifyToken, searchSpec);
 
+// Spec by Id endpoint - requires researcher role to update
 router.route("/:id")
 .get(verifyToken, getSpectById)
-.patch(verifyToken, checkRole("researcher"), updateSpec); // Researcher and above only route
+.patch(verifyToken, checkRole("researcher"), updateSpec);
 
+// Create spect endpoint - requires researcher role
 router.route("/")
-.post(verifyToken, checkRole("researcher"), createSpec); // Researcher and above only route
+.post(verifyToken, checkRole("researcher"), createSpec);
 
 export default router;

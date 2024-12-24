@@ -1,9 +1,3 @@
-/*
-Locations:
-POST /locations
-GET /locations/search?q=:query
-DELETE /locations/:id
-*/
 import express from "express";
 const router = express.Router();
 import { verifyToken, checkRole } from "../../middleware/valdiateToken.js";
@@ -13,17 +7,16 @@ import {
   deleteLocation,
 } from "../../controllers/locationController.js";
 
-// ---------------------
-// Authenticated Routes
-// ---------------------
-
+// Create location endpoint - requires researcher role to create
 router.route("/")
-.post(verifyToken, checkRole("researcher"), createLocation); // Researcher and above only route
+.post(verifyToken, checkRole("researcher"), createLocation);
 
+// Search endpoint - requires a laboratory to search
 router.route("/:laboratory")
 .get(verifyToken, searchLocation);
 
+// Delete location endpoint - requires researcher role to delete
 router.route("/:id")
-.delete(verifyToken, checkRole("researcher"), deleteLocation); // Researcher and above only route
+.delete(verifyToken, checkRole("researcher"), deleteLocation);
 
 export default router;

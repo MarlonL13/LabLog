@@ -7,6 +7,17 @@ import {
 } from "../models/index.js";
 import { Op } from "sequelize";
 
+/**
+ * Creates a new project and associates participants with it.
+ * 
+ * @async
+ * @param {Object} body - The data for the new project.
+ * @param {Array} body.participants - The participants to be associated with the project.
+ * @param {Object} body.projectData - The data for the project excluding participants.
+ * @param {Object} t - The transaction object for the database operation.
+ * @returns {Promise<Object>} The newly created project.
+ * @throws {Error} If the database operation fails.
+ */
 const createProject = async (body, t) => {
   const { participants, ...projectData } = body;
   const newProject = await Project.create(projectData, { transaction: t });
@@ -48,6 +59,27 @@ const searchProject = async (query) => {
   return projects;
 };
 
+/**
+ * Updates a project and its participants in the database.
+ * 
+ * @async
+ * @param {number|string} projectId - The ID of the project to update
+ * @param {Object} body - The project update data
+ * @param {Object[]} [body.participants] - Array of participant objects to update/add
+ * @param {number|string} body.participants[].user_id - User ID of the participant
+ * @param {boolean} body.participants[].is_coordinator - Whether the participant is a coordinator
+ * @returns {Promise<Array>} Result of the project update operation
+ * 
+ * @description
+ * This function performs the following operations:
+ * 1. Updates the project's main information
+ * 2. If participants are included in the update:
+ *    - Adds new participants
+ *    - Removes participants no longer associated
+ *    - Updates coordinator status for existing participants
+ * 
+ * @throws {Error} If database operations fail
+ */
 const updateProject = async (projectId, body) => {
   // First, update the project itself
   const update = await Project.update(body, {
@@ -59,12 +91,11 @@ const updateProject = async (projectId, body) => {
       const project = await Project.findByPk(projectId, {
         include: {
           model: User,
-          as: "users", // Assuming 'users' is the alias in your association
+          as: "users",
           attributes: ["id"],
           through: { attributes: ["is_coordinator"] }, // Include the 'is_coordinator' field
         },
       });
-
       // Get the current user IDs already associated with the project
       const currentParticipants = project.users.map((user) => user.id);
 
@@ -80,11 +111,11 @@ const updateProject = async (projectId, body) => {
 
       // Add new participants to the project
       if (participantsToAdd.length > 0) {
-        // Ensure each participant is added with correct attributes (this ensures you're passing valid data)
+        // Adding the new participants to the project
         const addParticipantsData = participantsToAdd.map((p) => ({
           project_id: projectId,
-          user_id: p.user_id, // Ensure this is the correct user ID
-          is_coordinator: p.is_coordinator, // Ensure this matches the column name
+          user_id: p.user_id,
+          is_coordinator: p.is_coordinator,
         }));
 
         await ProjectParticipant.bulkCreate(addParticipantsData, {
@@ -97,7 +128,7 @@ const updateProject = async (projectId, body) => {
         await project.removeUsers(participantsToRemove);
       }
 
-      // Now, update the `is_coordinator` flag for existing participants
+      // update coordinator status for existing participants
       for (const participant of body.participants) {
         // Update or create the `ProjectParticipant` association
         await ProjectParticipant.upsert({

@@ -1,5 +1,5 @@
-import express from 'express';
 const router = express.Router();
+import express from 'express';
 import usersRoutes from './usersRoutes.js';
 import authRoutes from './authRoutes.js';
 import locationsRoutes from './locationsRoutes.js';
@@ -9,6 +9,7 @@ import projectsRoutes from './projectsRoutes.js';
 import equipmentsRoutes from './equipmentsRoutes.js';
 import reservationsRoutes from './reservationsRoutes.js';
 
+// Aggregates all routes into one router
 router.use('/users', usersRoutes);
 router.use('/auth', authRoutes);
 router.use('/locations', locationsRoutes);

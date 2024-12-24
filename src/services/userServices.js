@@ -4,6 +4,17 @@ import { User } from "../models/index.js";
 import { passwordUtils } from "../utils/passwordUtils.js";
 import bcrypt from "bcrypt";
 
+/**
+ * Creates a new user record in the database
+ * 
+ * @async
+ * @param {Object} body - The request body containing user information
+ * @param {string} body.name - The full name of the user (must contain at least two words)
+ * @param {Object} body - Additional user data to be stored
+ * @throws {Error} If name has less than two words
+ * @throws {Error} If name contains numbers or invalid characters
+ * @returns {Promise<Object>} The created user record
+ */
 const createUser = async (body) => {
   body.name = body.name.trim();
   const namesArray = body.name.split(" ");
@@ -18,6 +29,7 @@ const createUser = async (body) => {
   body.password = await bcrypt.hash(defaultPassword, 10);
   return await createRecord(User, body);
 };
+
 
 const getUserById = async (userId) => {
   const userData = await User.findByPk(userId, {
@@ -35,6 +47,15 @@ const updateUser = async (userId, body) => {
   return await updateRecord(User, userId, body);
 };
 
+/**
+ * Searches for users based on name and role criteria
+ * 
+ * @async
+ * @param {Object} query - The search query parameters
+ * @param {string} [query.name] - Optional name to search for (case insensitive partial match)
+ * @param {string} [query.role] - Optional role to filter by (exact match)
+ * @returns {Promise<Array<{id: number, name: string}>>} Array of matching user objects with id and name
+ */
 export const searchUsers = async (query) => {
   const { name, role } = query;
   const whereConditions = {};
