@@ -5,6 +5,15 @@ import { passwordUtils } from "../utils/passwordUtils.js";
 import bcrypt from "bcrypt";
 
 const createUser = async (body) => {
+  body.name = body.name.trim();
+  const namesArray = body.name.split(" ");
+  if (namesArray.length < 2) {
+    throw new Error("Name should have at least two words.");
+  }
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  if (!nameRegex.test(body.name)) {
+    throw new Error("Name should not contain numbers or invalid characters.");
+  }
   const defaultPassword = passwordUtils.genereatePassword(body);
   body.password = await bcrypt.hash(defaultPassword, 10);
   return await createRecord(User, body);
