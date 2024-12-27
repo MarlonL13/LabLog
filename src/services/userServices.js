@@ -34,7 +34,7 @@ const createUser = async (body) => {
 const getUserById = async (userId) => {
   const userData = await User.findByPk(userId, {
     attributes: {
-      exclude: ["id"],
+      exclude: ["id", "password"],
     },
   });
   return userData;

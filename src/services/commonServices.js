@@ -1,4 +1,4 @@
-import { removeWhiteSpace } from "../utils/scriptUtils";
+import { removeWhiteSpace } from "../utils/scriptUtils.js";
 
 export const createRecord = async (Model, body) => {
   body = removeWhiteSpace(body);

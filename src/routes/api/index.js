@@ -10,13 +10,22 @@ import equipmentsRoutes from './equipmentsRoutes.js';
 import reservationsRoutes from './reservationsRoutes.js';
 
 // Aggregates all routes into one router
-router.use('/users', usersRoutes);
+
+//Auth routes
 router.use('/auth', authRoutes);
+//User routes
+router.use('/users', usersRoutes);
+//Location routes
 router.use('/locations', locationsRoutes);
+//Specs routes
 router.use('/specs', specsRoutes);
+//Product routes
 router.use('/products', productsRoutes);
+//Project routes
 router.use('/projects', projectsRoutes);
+//Equipment routes
 router.use('/equipments', equipmentsRoutes);
+//Reservation routes
 router.use('/reservations', reservationsRoutes);
 
 export default router;
