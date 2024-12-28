@@ -5,6 +5,13 @@ export const createUser = async (req, res) => {
     const newUser = await userServices.createUser(req.body);
     res.status(201).json(newUser);
   } catch (err) {
+    if (err.name === "SequelizeUniqueConstraintError") {
+      const field = err.errors[0].path; // Get the field causing the unique constraint violation
+      const value = err.errors[0].value; // Get the conflicting value
+      return res.status(409).json({
+        message: `The ${field} '${value}' is already in use. Please choose a different value.`,
+      });
+    }
     res.status(500).json({ message: `${err.name}: ${err.message}` });
   }
 };
@@ -24,6 +31,11 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
+    if (req.body.password || req.body.registration_number) {
+      res.status(403).json({
+        message: "Password and registration number cannot be changed",
+      });
+    }
     const update = await userServices.updateUser(req.params.id, req.body);
     if (update) {
       res.status(200).json({ message: "User updated" });
@@ -37,7 +49,7 @@ export const updateUser = async (req, res) => {
 
 export const searchUsers = async (req, res) => {
   try {
-    const users = await userServices.searchUsers(req.query)
+    const users = await userServices.searchUsers(req.query);
     if (users.length > 0) {
       res.status(200).json(users);
     } else {

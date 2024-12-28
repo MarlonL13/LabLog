@@ -9,11 +9,12 @@ import jwt from "jsonwebtoken";
  * @throws {Error} When token verification fails
  */
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  if (!token) {
+  if (!req.headers.authorization) {
+    console.log(req.headers);
     return res.status(401).json({ error: "Access token not providade" });
   }
-  
+
+  const token = req.headers.authorization.split(" ")[1];
   
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -41,9 +41,6 @@ const getUserById = async (userId) => {
 };
 
 const updateUser = async (userId, body) => {
-  if (body.password) {
-    throw new Error("Password updates are not allowed through this route.");
-  }
   return await updateRecord(User, userId, body);
 };
 

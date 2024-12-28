@@ -5,13 +5,31 @@ const swaggerDocument = {
     description: "API Documentation for LabLog",
     version: "1.0.0",
   },
-  host: "localhost:3000",
-  basePath: "/api",
-  schemes: ["http"],
+  servers: [
+    {
+      url: "http://localhost:3000/api", // Set the correct base URL
+      description: "Local development server",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
   paths: {
     "/auth/login": {
       post: {
-        description: "User authentication endpoint that accepts user credentials and returns an authentication token",
+        description:
+          "User authentication endpoint that accepts user credentials and returns an authentication token",
         tags: ["Auth"],
         requestBody: {
           required: true,
@@ -20,10 +38,7 @@ const swaggerDocument = {
               schema: {
                 type: "object",
                 properties: {
-                  name: {
-                    type: "string",
-                  },
-                  email: {
+                  registration_number: {
                     type: "string",
                   },
                   password: {
@@ -31,8 +46,7 @@ const swaggerDocument = {
                   },
                 },
                 example: {
-                  name: "John Doe",
-                  email: "john.doe@example.com",
+                  registration_number: "123456789",
                   password: "securepassword",
                 },
               },
@@ -51,7 +65,7 @@ const swaggerDocument = {
     },
     "/auth/refresh": {
       post: {
-          description: "Endpoint to refresh the authentication token",
+        description: "Endpoint to refresh the authentication token",
         tags: ["Auth"],
         responses: {
           200: {
@@ -109,14 +123,7 @@ const swaggerDocument = {
             schema: {
               type: "string",
             },
-          },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
+            enum: ["student", "researcher", "technician", "coordinator"],
           },
         ],
         responses: {
@@ -146,14 +153,6 @@ const swaggerDocument = {
           {
             name: "id",
             in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-          {
-            name: "authorization",
-            in: "header",
             required: true,
             schema: {
               type: "string",
@@ -190,14 +189,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -205,7 +196,32 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  email: {
+                    type: "string",
+                  },
+                  phone: {
+                    type: "string",
+                  },
+                  role: {
+                    type: "string",
+                    enum: ["student", "researcher", "technician", "coordinator"],
+                  },
+                  status: {
+                    type: "string",
+                    enum: ["active", "inactive"],
+                  },
+                },
+                example: {
+                  name: "John Doe",
+                  email: "example@email.com",
+                  phone: "1234567890",
+                  role: "student",
+                  status: "active",
+                },
               },
             },
           },
@@ -223,6 +239,9 @@ const swaggerDocument = {
           404: {
             description: "Not Found",
           },
+          409: {
+            description: "Conflict",
+          },
           500: {
             description: "Internal Server Error",
           },
@@ -234,14 +253,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new user",
         tags: ["Users"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -249,7 +260,31 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  email: {
+                    type: "string",
+                  },
+                  phone: {
+                    type: "string",
+                  },
+                  role: {
+                    type: "string",
+                    enum: ["student", "researcher", "technician", "coordinator"],
+                  },
+                  registration_number: {
+                    type: "string",
+                  },
+                },
+                example: {
+                  name: "John Doe",
+                  email: "example@email.com",
+                  phone: "1234567890",
+                  role: "student",
+                  registration_number: "123456789",
+                },
               },
             },
           },
@@ -275,14 +310,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new location",
         tags: ["Locations"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -290,7 +317,19 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  laboratory: {
+                    type: "string",
+                    enum: ["lab1", "lab2"],
+                  },
+                  sub_location: {
+                    type: "string",
+                  },
+                },
+                exemple: {
+                  laboratory: "lab1",
+                  sub_location: "Shelf A",
+                },
               },
             },
           },
@@ -319,14 +358,6 @@ const swaggerDocument = {
           {
             name: "laboratory",
             in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-          {
-            name: "authorization",
-            in: "header",
             required: true,
             schema: {
               type: "string",
@@ -365,14 +396,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -403,14 +426,6 @@ const swaggerDocument = {
             },
             required: true,
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -439,14 +454,6 @@ const swaggerDocument = {
           {
             name: "id",
             in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-          {
-            name: "authorization",
-            in: "header",
             required: true,
             schema: {
               type: "string",
@@ -483,14 +490,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -498,7 +497,34 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  abbreviation: {
+                    type: "string",
+                  },
+                  supplier: {
+                    type: "string",
+                  },
+                  size: {
+                    type: "number",
+                  },
+                  unit: {
+                    type: "string",
+                  },
+                  alert_threshold: {
+                    type: "number",
+                  },
+                },
+                example: {
+                  name: "Acetone",
+                  abbreviation: "ACE",
+                  supplier: "Fisher Scientific",
+                  size: 500,
+                  unit: "mL",
+                  alert_threshold: 10,
+                },
               },
             },
           },
@@ -527,14 +553,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new spec",
         tags: ["Specs"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -542,7 +560,34 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  abbreviation: {
+                    type: "string",
+                  },
+                  supplier: {
+                    type: "string",
+                  },
+                  size: {
+                    type: "number",
+                  },
+                  unit: {
+                    type: "string",
+                  },
+                  alert_threshold: {
+                    type: "number",
+                  },
+                },
+                example: {
+                  name: "Acetone",
+                  abbreviation: "ACE",
+                  supplier: "Fisher Scientific",
+                  size: 500,
+                  unit: "mL",
+                  alert_threshold: 10,
+                },
               },
             },
           },
@@ -571,14 +616,6 @@ const swaggerDocument = {
           {
             name: "id",
             in: "path",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
-          {
-            name: "authorization",
-            in: "header",
             required: true,
             schema: {
               type: "string",
@@ -615,14 +652,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -651,14 +680,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -666,7 +687,40 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  status: {
+                    type: "string",
+                    enum: ["in_use", "unused"],
+                  },
+                  project_id: {
+                    type: "string",
+                  },
+                  condition: {
+                    type: "string",
+                    enum: ["opened", "unopened", "finished"],
+                  },
+                  location_id: {
+                    type: "string",
+                  },
+                  expiration_date: {
+                    type: "string",
+                  },
+                  current_amount: {
+                    type: "number",
+                  },
+                  date_received: {
+                    type: "string",
+                  },
+                },
+                example: {
+                  status: "in_use",
+                  project_id: "123456789",
+                  condition: "opened",
+                  location_id: "123456789",
+                  expiration_date: "2022-12-31",
+                  current_amount: 500,
+                  date_received: "2022-01-01",
+                },
               },
             },
           },
@@ -695,14 +749,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new product",
         tags: ["Products"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -710,7 +756,40 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  status: {
+                    type: "string",
+                    enum: ["in_use", "unused"],
+                  },
+                  project_id: {
+                    type: "string",
+                  },
+                  condition: {
+                    type: "string",
+                    enum: ["opened", "unopened", "finished"],
+                  },
+                  location_id: {
+                    type: "string",
+                  },
+                  expiration_date: {
+                    type: "string",
+                  },
+                  current_amount: {
+                    type: "number",
+                  },
+                  date_received: {
+                    type: "string",
+                  },
+                },
+                example: {
+                  status: "in_use",
+                  project_id: "123456789",
+                  condition: "opened",
+                  location_id: "123456789",
+                  expiration_date: "2025-12-31",
+                  current_amount: 500,
+                  date_received: "2024-01-01",
+                },
               },
             },
           },
@@ -736,14 +815,6 @@ const swaggerDocument = {
         description: "Endpoint to search for projects",
         tags: ["Projects"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
           {
             name: "name",
             in: "query",
@@ -784,14 +855,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -823,14 +886,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -838,7 +893,43 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  description: {
+                    type: "string",
+                  },
+                  status: {
+                    type: "string",
+                    enum: ["active", "inactive"],
+                  },
+                  participants: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        user_id: {
+                          type: "string",
+                        },
+                        is_coordinator: {
+                          type: "boolean",
+                        },
+                      },
+                    },
+                  },
+                },
+                example: {
+                  name: "Project 1",
+                  description: "Description of Project 1",
+                  status: "active",
+                  participants: [
+                    {
+                      user_id: "UUID_Example",
+                      is_coordinator: true,
+                    },
+                  ],
+                },
               },
             },
           },
@@ -867,14 +958,6 @@ const swaggerDocument = {
         description: "Endpoint to get all projects",
         tags: ["Projects"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -895,14 +978,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new project",
         tags: ["Projects"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -910,7 +985,43 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  description: {
+                    type: "string",
+                  },
+                  status: {
+                    type: "string",
+                    enum: ["active", "inactive"],
+                  },
+                  participants: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        user_id: {
+                          type: "string",
+                        },
+                        is_coordinator: {
+                          type: "boolean",
+                        },
+                      },
+                    },
+                  },
+                },
+                example: {
+                  name: "Project 1",
+                  description: "Description of Project 1",
+                  status: "active",
+                  participants: [
+                    {
+                      user_id: "UUID_Example",
+                      is_coordinator: true,
+                    },
+                  ],
+                },
               },
             },
           },
@@ -944,14 +1055,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -959,7 +1062,19 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  status: {
+                    type: "string",
+                    enum: ["available", "maintenance", "broken"],
+                  },
+                },
+                example: {
+                  name: "Equipment 1",
+                  status: "available",
+                },
               },
             },
           },
@@ -988,14 +1103,6 @@ const swaggerDocument = {
         description: "Endpoint to get all equipments",
         tags: ["Equipments"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
           {
             name: "status",
             in: "query",
@@ -1026,14 +1133,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new equipment",
         tags: ["Equipments"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -1041,7 +1140,19 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  status: {
+                    type: "string",
+                    enum: ["available", "maintenance", "broken"],
+                  },
+                },
+                example: {
+                  name: "Equipment 1",
+                  status: "available",
+                },
               },
             },
           },
@@ -1067,14 +1178,6 @@ const swaggerDocument = {
         description: "Endpoint to search for reservations",
         tags: ["Reservations"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
           {
             name: "name",
             in: "query",
@@ -1113,14 +1216,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -1152,14 +1247,6 @@ const swaggerDocument = {
               type: "string",
             },
           },
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -1182,14 +1269,6 @@ const swaggerDocument = {
         description: "Endpoint to get all reservations",
         tags: ["Reservations"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           200: {
@@ -1213,14 +1292,6 @@ const swaggerDocument = {
         description: "Endpoint to create a new reservation",
         tags: ["Reservations"],
         parameters: [
-          {
-            name: "authorization",
-            in: "header",
-            required: true,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         requestBody: {
           required: true,
@@ -1228,7 +1299,22 @@ const swaggerDocument = {
             "application/json": {
               schema: {
                 type: "object",
-                properties: {},
+                properties: {
+                  equipment_id: {
+                    type: "string",
+                  },
+                  start_date: {
+                    type: "string",
+                  },
+                  end_date: {
+                    type: "string",
+                  },
+                },
+                exemple: {
+                  equipment_id: "UUID_example",
+                  start_date: "2022-01-01",
+                  end_date: "2022-01-02",
+                },
               },
             },
           },
