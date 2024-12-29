@@ -53,7 +53,7 @@ export const getReservationById = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     await reservationServices.deleteReservation(req.params.id);
-    res.status(200).json({ message: "Location deleted" });
+    res.status(200).json({ message: "Reservation deleted" });
   } catch (err) {
     res.status(500).json({ message: `${err.name}: ${err.message}` });
   }

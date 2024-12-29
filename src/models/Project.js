@@ -21,6 +21,7 @@ Project.init(
     status: {
       type: DataTypes.ENUM("active", "inactive"),
       allowNull: false,
+      defaultValue: "active",
     },
   },
   {

@@ -5,6 +5,7 @@ import {
   ProjectParticipant,
   User,
 } from "../models/index.js";
+import { removeWhiteSpace } from "../utils/scriptUtils.js";
 import { Op } from "sequelize";
 
 /**
@@ -19,7 +20,8 @@ import { Op } from "sequelize";
  * @throws {Error} If the database operation fails.
  */
 const createProject = async (body, t) => {
-  const { participants, ...projectData } = body;
+  let { participants, ...projectData } = body;
+  projectData = removeWhiteSpace(projectData);
   const newProject = await Project.create(projectData, { transaction: t });
 
   if (participants && participants.length > 0) {
@@ -45,7 +47,7 @@ const searchProject = async (query) => {
       },
     },
     attributes: {
-      exclude: ["id", "status"],
+      exclude: ["status"],
     },
     include: [
       {
@@ -82,6 +84,7 @@ const searchProject = async (query) => {
  */
 const updateProject = async (projectId, body) => {
   // First, update the project itself
+  body = removeWhiteSpace(body);
   const update = await Project.update(body, {
     where: { id: projectId },
   });
@@ -177,7 +180,7 @@ const getActiveProjects = async () => {
       status: "active",
     },
     attributes: {
-      exclude: ["id", "status"],
+      exclude: ["status"],
     },
     include: [
       {

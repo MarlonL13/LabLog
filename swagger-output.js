@@ -688,6 +688,9 @@ const swaggerDocument = {
               schema: {
                 type: "object",
                 properties: {
+                  spec_id: {
+                    type: "string",
+                  },
                   status: {
                     type: "string",
                     enum: ["in_use", "unused"],
@@ -713,10 +716,11 @@ const swaggerDocument = {
                   },
                 },
                 example: {
+                  spec_id: "UUID_example",
                   status: "in_use",
-                  project_id: "123456789",
+                  project_id: "UUID_example",
                   condition: "opened",
-                  location_id: "123456789",
+                  location_id: "UUID_example",
                   expiration_date: "2022-12-31",
                   current_amount: 500,
                   date_received: "2022-01-01",
@@ -1303,6 +1307,19 @@ const swaggerDocument = {
                   equipment_id: {
                     type: "string",
                   },
+                  project_id:{
+                    type: "string",
+                  },
+                  requester_id: {
+                    type: "string",
+                  },
+                  operator: {
+                    type: "string",
+                    enum: ["self", "technician"],
+                  },
+                  description: {
+                    type: "string",
+                  },
                   start_date: {
                     type: "string",
                   },
@@ -1310,8 +1327,12 @@ const swaggerDocument = {
                     type: "string",
                   },
                 },
-                exemple: {
+                example: {
                   equipment_id: "UUID_example",
+                  project_id: "UUID_example",
+                  requester_id: "UUID_example",
+                  operator: "self",
+                  description: "Reservation description",
                   start_date: "2022-01-01",
                   end_date: "2022-01-02",
                 },
